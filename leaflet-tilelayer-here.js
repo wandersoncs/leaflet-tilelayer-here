@@ -144,20 +144,13 @@ L.TileLayer.HERE = L.TileLayer.extend({
 			}
 		}
 
-		var attributions = ['<a href="https://legal.here.com/terms/serviceterms/gb/">HERE maps</a>'];
-		for (var i = 0; i < visibleProviders.length; i++) {
-			var provider = visibleProviders[i];
-			attributions.push('<abbr title="' + provider.alt + '">' + provider.label + '</abbr>');
-		}
-
-		var attributionText = '© ' + attributions.join(', ') + '. ';
+		var attributionText = '© <a href="https://legal.here.com/terms/serviceterms/gb/">HERE maps</a>' ;
 
 		if (attributionText !== this._attributionText) {
 			this._map.attributionControl.removeAttribution(this._attributionText);
 			this._map.attributionControl.addAttribution(this._attributionText = attributionText);
 		}
-	},
-
+	}
 });
 
 
