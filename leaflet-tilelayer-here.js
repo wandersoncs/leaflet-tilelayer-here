@@ -50,7 +50,7 @@ L.TileLayer.HERE = L.TileLayer.extend({
 		// 		&app_code={YOUR_APP_CODE}
 		// 		&{param}={value}
 
-		var path = '/{resource}/2.1/{resource}/{mapId}/{scheme}/{z}/{x}/{y}/{tileResolution}/{format}?app_id={appId}&app_code={appCode}';
+		var path = '/{resource}/2.1/{resource}/{mapId}/{scheme}/{z}/{x}/{y}/{tileResolution}/{format}?app_id={appId}&app_code={appCode}&lg=por&ppi=72&pview=DEF';
 		var attributionPath = '/maptile/2.1/copyright/{mapId}?app_id={appId}&app_code={appCode}&lg=por&ppi=72&pview=DEF';
 
 		var tileServer = 'base.maps.api.here.com';
