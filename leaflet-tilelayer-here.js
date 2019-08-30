@@ -84,7 +84,9 @@ L.TileLayer.HERE = L.TileLayer.extend({
 	onRemove: function onRemove(map) {
 		L.TileLayer.prototype.onRemove.call(this, map);
 
-		this._map.attributionControl.removeAttribution(this._attributionText);
+		if (this._map.attributionControl) {
+			this._map.attributionControl.removeAttribution(this._attributionText);
+		}
 
 		this._map.off('moveend zoomend resetview', this._findCopyrightBBox, this);
 	},
@@ -144,9 +146,9 @@ L.TileLayer.HERE = L.TileLayer.extend({
 			}
 		}
 
-		var attributionText = '© <a href="https://legal.here.com/terms/serviceterms/gb/">HERE maps</a>' ;
+		var attributionText = '© <a href="https://legal.here.com/terms/serviceterms/gb/">HERE maps</a>';
 
-		if (attributionText !== this._attributionText) {
+		if (attributionText !== this._attributionText && this._map.attributionControl) {
 			this._map.attributionControl.removeAttribution(this._attributionText);
 			this._map.attributionControl.addAttribution(this._attributionText = attributionText);
 		}
