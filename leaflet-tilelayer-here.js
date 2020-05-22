@@ -1,5 +1,5 @@
 
-// 🍂class TileLayer.HERE
+// class TileLayer.HERE
 // Tile layer for HERE maps tiles.
 L.TileLayer.HERE = L.TileLayer.extend({
 
@@ -8,29 +8,35 @@ L.TileLayer.HERE = L.TileLayer.extend({
 		minZoom: 2,
 		maxZoom: 18,
 
-		// 🍂option scheme: String = 'normal.day'
+		// option scheme: String = 'normal.day'
 		// The "map scheme", as documented in the HERE API.
 		scheme: 'normal.day',
 
-		// 🍂option resource: String = 'maptile'
+		// option resource: String = 'maptile'
 		// The "map resource", as documented in the HERE API.
 		resource: 'maptile',
 
-		// 🍂option mapId: String = 'newest'
+		// option mapId: String = 'newest'
 		// Version of the map tiles to be used, or a hash of an unique map
 		mapId: 'newest',
 
-		// 🍂option format: String = 'png8'
+		// option format: String = 'png8'
 		// Image format to be used (`png8`, `png`, or `jpg`)
 		format: 'png8',
 
-		// 🍂option appId: String = ''
-		// Required option. The `app_id` provided as part of the HERE credentials
+		// Deprecated
+		// option appId: String = ''
+		// Optional option. The `app_id` provided as part of the HERE credentials
 		appId: '',
 
-		// 🍂option appCode: String = ''
-		// Required option. The `app_code` provided as part of the HERE credentials
+		// Deprecated
+		// option appCode: String = ''
+		// Optional option. The `app_code` provided as part of the HERE credentials
 		appCode: '',
+
+		// option apiKey: String = ''
+		// Required option. The `apiKey` provided as part of the HERE credentials
+		apiKey: ''
 	},
 
 
@@ -50,17 +56,17 @@ L.TileLayer.HERE = L.TileLayer.extend({
 		// 		&app_code={YOUR_APP_CODE}
 		// 		&{param}={value}
 
-		var path = '/{resource}/2.1/{resource}/{mapId}/{scheme}/{z}/{x}/{y}/{tileResolution}/{format}?app_id={appId}&app_code={appCode}&lg=por&ppi=72&pview=DEF';
-		var attributionPath = '/maptile/2.1/copyright/{mapId}?app_id={appId}&app_code={appCode}&lg=por&ppi=72&pview=DEF';
+		var path = '/{resource}/2.1/{resource}/{mapId}/{scheme}/{z}/{x}/{y}/{tileResolution}/{format}?apiKey={apiKey}&lg=por&ppi=72&pview=DEF';
+		var attributionPath = '/maptile/2.1/copyright/{mapId}?apiKey={apiKey}&lg=por&ppi=72&pview=DEF';
 
-		var tileServer = 'base.maps.api.here.com';
+		var tileServer = 'base.maps.ls.hereapi.com';
 		if (schemeStart == 'satellite' ||
 			schemeStart == 'terrain' ||
 			schemeStart == 'hybrid') {
-			tileServer = 'aerial.maps.api.here.com';
+			tileServer = 'aerial.maps.ls.hereapi.com';
 		}
 		if (options.scheme.indexOf('.traffic.') !== -1) {
-			tileServer = 'traffic.maps.api.here.com';
+			tileServer = 'traffic.maps.ls.hereapi.com';
 		}
 
 		var tileUrl = 'https://{s}.' + tileServer + path;
