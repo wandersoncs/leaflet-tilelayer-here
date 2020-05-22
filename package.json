@@ -1,8 +1,11 @@
 {
   "name": "leaflet-tilelayer-here",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "HERE maps for Leaflet",
   "main": "leaflet-tilelayer-here.js",
   "author": "wandersoncs <wandersoncorreiasouza@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "url": "https://github.com/wandersoncs/leaflet-tilelayer-here.git"
+  }
 }
