@@ -3,7 +3,17 @@
 
 Displays [map tiles from HERE maps](https://developer.here.com/rest-apis/documentation/enterprise-map-tile/topics/quick-start.html) in your Leaflet map.
 
+## Installing
+```
+npm i -S leaflet-tilelayer-here
+```
+or using Yarn
+```
+yarn add leaflet-tilelayer-here
+```
+
 ## Usage
+You will need credentials that you can get [here](https://developer.here.com/documentation/map-tile/dev_guide/topics/credentials-auth-options.html).
 
 ```
 L.tileLayer.here({ apiKey: 'abcde' }).addTo(map);
