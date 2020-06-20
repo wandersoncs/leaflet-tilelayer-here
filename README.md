@@ -1,6 +1,8 @@
 
 # Leaflet.TileLayer.HERE
 
+![](https://img.shields.io/npm/v/leaflet-tilelayer-here)
+
 Displays [map tiles from HERE maps](https://developer.here.com/rest-apis/documentation/enterprise-map-tile/topics/quick-start.html) in your Leaflet map.
 
 ## Installing
