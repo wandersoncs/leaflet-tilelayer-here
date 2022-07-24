@@ -1,8 +1,4 @@
-
-// class TileLayer.HERE
-// Tile layer for HERE maps tiles.
 L.TileLayer.HERE = L.TileLayer.extend({
-
 	options: {
 		subdomains: '1234',
 		minZoom: 2,
@@ -24,16 +20,6 @@ L.TileLayer.HERE = L.TileLayer.extend({
 		// Image format to be used (`png8`, `png`, or `jpg`)
 		format: 'png8',
 
-		// Deprecated
-		// option appId: String = ''
-		// Optional option. The `app_id` provided as part of the HERE credentials
-		appId: '',
-
-		// Deprecated
-		// option appCode: String = ''
-		// Optional option. The `app_code` provided as part of the HERE credentials
-		appCode: '',
-
 		// option apiKey: String = ''
 		// Required option. The `apiKey` provided as part of the HERE credentials
 		apiKey: ''
@@ -52,20 +38,21 @@ L.TileLayer.HERE = L.TileLayer.extend({
 		}
 
 		// 		{Base URL}{Path}/{resource (tile type)}/{map id}/{scheme}/{zoom}/{column}/{row}/{size}/{format}
-		// 		?app_id={YOUR_APP_ID}
-		// 		&app_code={YOUR_APP_CODE}
-		// 		&{param}={value}
+		// 		&{apiKey}={apiKey}
+		//    &{param}={value}
 
 		var path = '/{resource}/2.1/{resource}/{mapId}/{scheme}/{z}/{x}/{y}/{tileResolution}/{format}?apiKey={apiKey}&lg=por&ppi=72&pview=DEF';
 		var attributionPath = '/maptile/2.1/copyright/{mapId}?apiKey={apiKey}&lg=por&ppi=72&pview=DEF';
 
 		var tileServer = 'base.maps.ls.hereapi.com';
+
 		if (schemeStart == 'satellite' ||
 			schemeStart == 'terrain' ||
 			schemeStart == 'hybrid') {
 			tileServer = 'aerial.maps.ls.hereapi.com';
 		}
-		if (options.scheme.indexOf('.traffic.') !== -1) {
+
+		if (options.scheme.indexOf('traffic') !== -1) {
 			tileServer = 'traffic.maps.ls.hereapi.com';
 		}
 
@@ -76,7 +63,6 @@ L.TileLayer.HERE = L.TileLayer.extend({
 		L.TileLayer.prototype.initialize.call(this, tileUrl, options);
 
 		this._attributionText = '';
-
 	},
 
 	onAdd: function onAdd(map) {
