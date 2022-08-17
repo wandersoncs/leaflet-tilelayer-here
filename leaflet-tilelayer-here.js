@@ -4,17 +4,11 @@ L.TileLayer.HERE = L.TileLayer.extend({
 		minZoom: 2,
 		maxZoom: 18,
 
-		// option scheme: String = 'normal.day'
-		// The "map scheme", as documented in the HERE API.
-		scheme: 'normal.day',
+		// option style: String = 'explore.day'
+		style: 'explore.day',
 
-		// option resource: String = 'maptile'
-		// The "map resource", as documented in the HERE API.
-		resource: 'maptile',
-
-		// option mapId: String = 'newest'
-		// Version of the map tiles to be used, or a hash of an unique map
-		mapId: 'newest',
+		// option resource: String = 'base'
+		resource: 'base',
 
 		// option format: String = 'png8'
 		// Image format to be used (`png8`, `png`, or `jpg`)
@@ -29,36 +23,16 @@ L.TileLayer.HERE = L.TileLayer.extend({
 	initialize: function initialize(options) {
 		options = L.setOptions(this, options);
 
-		// Decide if this scheme uses the aerial servers or the basemap servers
-		var schemeStart = options.scheme.split('.')[0];
 		options.tileResolution = 256;
 
 		if (L.Browser.retina) {
 			options.tileResolution = 512;
 		}
 
-		// 		{Base URL}{Path}/{resource (tile type)}/{map id}/{scheme}/{zoom}/{column}/{row}/{size}/{format}
-		// 		&{apiKey}={apiKey}
-		//    &{param}={value}
+		var tileUrl = 'https://maps.hereapi.com/v3/{resource}/mc/{z}/{x}/{y}/{format}?apiKey={apiKey}&style={style}&size={tileResolution}';
+		var copyrightUrl = 'https://maps.hereapi.com/v3/copyright?apiKey={apiKey}';
 
-		var path = '/{resource}/2.1/{resource}/{mapId}/{scheme}/{z}/{x}/{y}/{tileResolution}/{format}?apiKey={apiKey}&lg=por&ppi=72&pview=DEF';
-		var attributionPath = '/maptile/2.1/copyright/{mapId}?apiKey={apiKey}&lg=por&ppi=72&pview=DEF';
-
-		var tileServer = 'base.maps.ls.hereapi.com';
-
-		if (schemeStart == 'satellite' ||
-			schemeStart == 'terrain' ||
-			schemeStart == 'hybrid') {
-			tileServer = 'aerial.maps.ls.hereapi.com';
-		}
-
-		if (options.scheme.indexOf('traffic') !== -1) {
-			tileServer = 'traffic.maps.ls.hereapi.com';
-		}
-
-		var tileUrl = 'https://{s}.' + tileServer + path;
-
-		this._attributionUrl = L.Util.template('https://1.' + tileServer + attributionPath, this.options);
+		this._attributionUrl = L.Util.template(copyrightUrl, this.options);
 
 		L.TileLayer.prototype.initialize.call(this, tileUrl, options);
 
@@ -96,12 +70,13 @@ L.TileLayer.HERE = L.TileLayer.extend({
 
 	_parseAttributionBBoxes: function _parseAttributionBBoxes(json) {
 		if (!this._map) { return; }
-		var providers = json[this.options.scheme.split('.')[0]] || json.normal;
+		var providers = json.copyrights.in;
+
 		for (var i = 0; i < providers.length; i++) {
-			if (providers[i].boxes) {
-				for (var j = 0; j < providers[i].boxes.length; j++) {
-					var box = providers[i].boxes[j];
-					providers[i].boxes[j] = L.latLngBounds([[box[0], box[1]], [box[2], box[3]]]);
+			if (providers[i].boundingBoxes) {
+				for (var j = 0; j < providers[i].boundingBoxes.length; j++) {
+					var box = providers[i].boundingBoxes[j];
+					providers[i].boundingBoxes[j] = L.latLngBounds([[box.east, box.north], [box.west, box.south]]);
 				}
 			}
 		}
@@ -123,14 +98,14 @@ L.TileLayer.HERE = L.TileLayer.extend({
 		for (var i = 0; i < providers.length; i++) {
 			if (providers[i].minLevel < zoom && providers[i].maxLevel > zoom)
 
-				if (!providers[i].boxes) {
+				if (!providers[i].boundingBoxes) {
 					// No boxes = attribution always visible
 					visibleProviders.push(providers[i]);
 					break;
 				}
 
-			for (var j = 0; j < providers[i].boxes.length; j++) {
-				var box = providers[i].boxes[j];
+			for (var j = 0; j < providers[i].boundingBoxes.length; j++) {
+				var box = providers[i].boundingBoxes[j];
 				if (visibleBounds.overlaps(box)) {
 					visibleProviders.push(providers[i]);
 					break;
