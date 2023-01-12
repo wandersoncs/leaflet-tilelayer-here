@@ -16,7 +16,19 @@ L.TileLayer.HERE = L.TileLayer.extend({
 
 		// option apiKey: String = ''
 		// Required option. The `apiKey` provided as part of the HERE credentials
-		apiKey: ''
+		apiKey: '',
+
+		// option features: String = ''
+		// Map Features
+		features: null,
+
+		// option mapVersion: String = ''
+		// Map Version
+		mapVersion: null,
+
+		// option language: String = ''
+		// Map language
+		language: null
 	},
 
 
@@ -31,6 +43,18 @@ L.TileLayer.HERE = L.TileLayer.extend({
 
 		var tileUrl = 'https://maps.hereapi.com/v3/{resource}/mc/{z}/{x}/{y}/{format}?apiKey={apiKey}&style={style}&size={tileResolution}';
 		var copyrightUrl = 'https://maps.hereapi.com/v3/copyright?apiKey={apiKey}';
+
+		if (options.features) {
+			tileUrl += '&features={features}'
+		}
+
+		if (options.mapVersion) {
+			tileUrl += '&mv={mapVersion}'
+		}
+
+		if (options.language) {
+			tileUrl += '&lang={language}'
+		}
 
 		this._attributionUrl = L.Util.template(copyrightUrl, this.options);
 
